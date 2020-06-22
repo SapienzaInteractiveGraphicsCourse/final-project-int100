@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        #version 300 es
+
+        in vec4 aPosition;
+        in vec2 aBodyTexCoord;
+        in vec2 aHeadTexCoord;
+
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+
+        out vec2 vBodyTexCoord;
+        out vec2 vHeadTexCoord;
+
+        void main(){
+            gl_Position = projectionMatrix * modelViewMatrix * aPosition;
+            vBodyTexCoord = aBodyTexCoord;
+            vHeadTexCoord = aHeadTexCoord;
+        }
+    </script>
+
+    
+    
+    
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        #version 300 es
+
+        precision mediump float;
+
+        in vec2 vBodyTexCoord;
+        in vec2 vHeadTexCoord;
+
+        uniform float fragmentFlag;
+        uniform sampler2D uTextureMap;
+
+        out vec4 fColor;
+
+        void main(){
+            // Body
+            if (fragmentFlag == 0.0) {fColor = texture(uTextureMap, vBodyTexCoord);}
+
+            // Head
+            if (fragmentFlag == 1.0) {fColor = texture(uTextureMap, vHeadTexCoord);}
+
+            // Green
+            else if(fragmentFlag == 2.0) { fColor = vec4(0.0,1.0,0.0,1.0);}
+            // Brown
+            else if (fragmentFlag == 3.0) { fColor = vec4(0.7,0.4,0.1,1.0);}
+
+        }
+    </script>
+
+    
+    
+    <script type="text/javascript" src="../Common/InitShaders.js"></script>
+    <script type="text/javascript" src="../Common/MVnew.js"></script>
+    <script type="text/javascript" src="Homework2.js"></script>
+
+    
+    
+    
+
+
+
+    
+    <body>
+    
+        <canvas id="gl-canvas" width="512" height="512">Oops ... your browser doesn't support the HTML5 canvas element</canvas>
+
+        <p> &bull; <button id ="Button"> START ANIMATION </button> </p>
+
+        <img id = "TexImage" src = "bear.jpg" hidden></img>
+        
+    </body>
+
+
+</html>
